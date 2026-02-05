@@ -9,7 +9,7 @@ import com.mojang.serialization.MapCodec
 /**
  * Converts a codec of a type to a codec of the same type but functional.
  */
-fun <A : Any?> MapCodec<A>.functionally(): MapCodec<() -> A> {
+fun <A> MapCodec<A>.functionally(): MapCodec<() -> A> {
     return xmap({ { it } }, { it() })
 }
 

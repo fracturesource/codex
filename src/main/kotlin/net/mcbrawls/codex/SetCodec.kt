@@ -30,7 +30,7 @@ class SetCodec<A>(private val elementCodec: Codec<A>) : Codec<Set<A>> {
             stream.accept { t ->
                 val element = elementCodec.decode(ops, t)
                 element.error().ifPresent { failed.add(t) }
-                result.value = result.value.apply2stable({ r, v ->
+                result.value = result.get().apply2stable({ r, v ->
                     read.add(v.first)
                     return@apply2stable r
                 }, element)
@@ -41,7 +41,7 @@ class SetCodec<A>(private val elementCodec: Codec<A>) : Codec<Set<A>> {
 
             val pair = Pair.of(elements, errors)
 
-            return@flatMap result.value.map { pair }.setPartial(pair)
+            return@flatMap result.get().map { pair }.setPartial(pair)
         }
     }
 
